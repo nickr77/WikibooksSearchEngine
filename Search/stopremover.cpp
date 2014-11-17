@@ -20,7 +20,7 @@ StopRemover::StopRemover()
 
 }
 
-bool StopRemover::checkWord(string word)
+bool StopRemover::checkWord(string &word)
 {
     for(int i = 0; i < stopWords.size(); i++)
     {

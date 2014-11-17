@@ -17,5 +17,7 @@ int main()
 void driver()
 {
     DocParse parser;
+    cout << "Begin Parsing" << endl;
     parser.parse();
+    cout << "End Parsing" << endl;
 }

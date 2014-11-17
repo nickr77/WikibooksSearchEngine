@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 using namespace std;
+using namespace Porter2Stemmer;
 
 DocParse::DocParse()
 {
@@ -25,8 +26,8 @@ DocParse::DocParse()
 void DocParse::parse()
 {
     ifstream inputFile;
-    int pageCounter = 0;
     inputFile.open("wikibooks.xml");
+    int pageCounter = 0;
     if (inputFile.is_open())
     {
         while(!inputFile.eof())
@@ -72,8 +73,7 @@ void DocParse::parse()
                             title += line[i];
                         }
                         //cout << "Title: " << title << endl;
-                        pageCounter++;
-                        cout << pageCounter << endl;
+                        cout << ++pageCounter << endl;
                         title.clear();
                     }
                     else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)
@@ -133,14 +133,25 @@ void DocParse::parse()
                         stringstream ss(text);
                         while(getline(ss, individualWord, ' '))
                         {
+
                             if(individualWord.find('&') != string::npos)
                             {
                                 //cout << individualWord << endl;
                             }
-                            else if(tolower(individualWord[0]) < 'a' || tolower(individualWord[0]) > 'z')
+                            else
                             {
-                                //cout << individualWord << endl;
+                                individualWord[0] = tolower(individualWord[0]);
+                                if(individualWord[0] < 'a' || individualWord[0] > 'z')
+                                {
+                                    //cout << individualWord << endl;
+                                }
+                                else if (sRemove.checkWord(individualWord) == false)
+                                {
+                                    stem(individualWord);
+                                    //cout << individualWord << endl;
+                                }
                             }
+
                         }
                         //cout << "Text: " << text << endl;
                         text.clear();

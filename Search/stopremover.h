@@ -8,7 +8,7 @@ private:
     std::vector<std::string> stopWords;
 public:
     StopRemover();
-    bool checkWord(std::string word);
+    bool checkWord(std::string &word);
 
 };
 

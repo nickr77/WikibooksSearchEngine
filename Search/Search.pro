@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     avltreeinterface.cpp \
     hashtableinterface.cpp \
     tagstack.cpp \
-    porter2_stemmer.cpp
+    porter2_stemmer.cpp \
+    avlnode.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -23,5 +24,6 @@ HEADERS += \
     avltreeinterface.h \
     hashtableinterface.h \
     tagstack.h \
-    porter2_stemmer.h
+    porter2_stemmer.h \
+    avlnode.h
 

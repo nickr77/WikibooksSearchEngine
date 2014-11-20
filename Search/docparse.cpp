@@ -32,6 +32,7 @@ void DocParse::parse()
     {
         while(!inputFile.eof())
         {
+            //cout << "Hello" << endl;
             while(getline(inputFile, line))
             {
                 counter = 0;
@@ -73,7 +74,7 @@ void DocParse::parse()
                             title += line[i];
                         }
                         //cout << "Title: " << title << endl;
-                        cout << ++pageCounter << endl;
+                        //cout << ++pageCounter << endl;
                         title.clear();
                     }
                     else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)
@@ -95,14 +96,6 @@ void DocParse::parse()
                     else if(curTag == "text xml:space=\"preserve\"")
                     {
                         textStart = counter + 1;
-                        //cout << line[textStart];
-                        /////////////////////////
-//                        if (counter > line.size() - 1)
-//                        {
-//                            getline(inputFile, line);
-//                            counter = 0;
-//                        }
-                        /////////////////////////
 
                         while(line[counter] != '<')
                         {
@@ -131,25 +124,34 @@ void DocParse::parse()
                             text += line[i];
                         }
                         stringstream ss(text);
+
                         while(getline(ss, individualWord, ' '))
                         {
 
-                            if(individualWord.find('&') != string::npos)
+                            if(individualWord.find('&') != string::npos || individualWord.find(']') != string::npos)
+                            {
+                                //cout << individualWord << endl;
+                            }
+                            else if (individualWord.size() > 20)
                             {
                                 //cout << individualWord << endl;
                             }
                             else
                             {
+                                //cout << individualWord << endl;
                                 individualWord[0] = tolower(individualWord[0]);
                                 if(individualWord[0] < 'a' || individualWord[0] > 'z')
                                 {
                                     //cout << individualWord << endl;
                                 }
-                                else if (sRemove.checkWord(individualWord) == false)
+                                else if (sRemove.checkWord(individualWord) == false /*|| individualWord.size() > 3*/)
                                 {
+                                    //cout << individualWord << endl;
                                     stem(individualWord);
                                     //cout << individualWord << endl;
                                 }
+
+
                             }
 
                         }

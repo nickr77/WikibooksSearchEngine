@@ -17,7 +17,7 @@ TagStack::~TagStack()
     delete[] elements;
 }
 
-void TagStack::push(string x)
+void TagStack::push(string &x)
 {
     if(current > upperIndex)
     {
@@ -72,9 +72,10 @@ bool TagStack::inList(string x)
             return true;
     }
     return false;
+
 }
 
-string TagStack::read(int indice)
+string TagStack::read(int &indice)
 {
     return elements[indice];
 }

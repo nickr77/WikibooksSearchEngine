@@ -10,12 +10,12 @@ private:
 public:
     TagStack();
     ~TagStack();
-    void push(std::string x);
+    void push(std::string &x);
     std::string pop();
     std::string top();
     bool isEmpty();
     bool inList(std::string x);
-    std::string read(int x);
+    std::string read(int &x);
     int quantity();
     void clear();
 

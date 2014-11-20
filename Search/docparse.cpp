@@ -52,14 +52,14 @@ void DocParse::parse()
                         }
 
 
-                        if(line[tagStart] != '/')
-                        {
-                            tagStack.push(curTag);
-                        }
-                        else //tagStart == '/'
-                        {
-                            tagStack.pop();
-                        }
+//                        if(line[tagStart] != '/')
+//                        {
+//                            tagStack.push(curTag);
+//                        }
+//                        else //tagStart == '/'
+//                        {
+//                            tagStack.pop();
+//                        }
                     }
                     if(curTag == "title")
                     {
@@ -74,25 +74,25 @@ void DocParse::parse()
                             title += line[i];
                         }
                         //cout << "Title: " << title << endl;
-                        //cout << ++pageCounter << endl;
+                        cout << ++pageCounter << endl;
                         title.clear();
                     }
-                    else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)
-                    {
-                        idStart = counter + 1;
-                        while(line[counter] != '<')
-                        {
-                            counter++;
-                        }
-                        idEnd = counter -1;
-                        for(int i = idStart; i <= idEnd; i++)
-                        {
-                            idString += line[i];
-                        }
-                        id = atoi(idString.c_str());
-                        //cout << "ID: " << id << endl;
-                        idString.clear();
-                    }
+//                    else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)
+//                    {
+//                        idStart = counter + 1;
+//                        while(line[counter] != '<')
+//                        {
+//                            counter++;
+//                        }
+//                        idEnd = counter -1;
+//                        for(int i = idStart; i <= idEnd; i++)
+//                        {
+//                            idString += line[i];
+//                        }
+//                        id = atoi(idString.c_str());
+//                        //cout << "ID: " << id << endl;
+//                        idString.clear();
+//                    }
                     else if(curTag == "text xml:space=\"preserve\"")
                     {
                         textStart = counter + 1;
@@ -160,7 +160,7 @@ void DocParse::parse()
                     }
                     else if(curTag == "text xml:space=\"preserve\" /")
                     {
-                        tagStack.pop();
+                        counter+=27;
                     }
                     else if (line[counter] != '<' || line[counter] != '>')
                     {

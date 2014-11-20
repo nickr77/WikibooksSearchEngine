@@ -9,7 +9,7 @@ class DocParse
 {
 private:
     StopRemover sRemove;
-    TagStack tagStack;
+    //TagStack tagStack;
     std::vector<std::string> strVec;
     std::string line;
     int tagStart;

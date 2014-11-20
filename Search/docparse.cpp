@@ -74,7 +74,7 @@ void DocParse::parse()
                             title += line[i];
                         }
                         //cout << "Title: " << title << endl;
-                        cout << ++pageCounter << endl;
+                        //cout << ++pageCounter << endl;
                         title.clear();
                     }
 //                    else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)

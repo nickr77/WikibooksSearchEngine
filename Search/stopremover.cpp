@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <unordered_set>
+
 using namespace std;
 
 StopRemover::StopRemover()
@@ -14,7 +16,7 @@ StopRemover::StopRemover()
     {
         while(getline(inputFile, line))
         {
-            stopWords.push_back(line);
+            stopWords.insert(line);
         }
 
     }
@@ -24,6 +26,24 @@ StopRemover::StopRemover()
 
 bool StopRemover::checkWord(string &word)
 {
+
+    exists = stopWords.find(word);
+    if (exists != stopWords.end())
+    {
+        //cout << word << endl;
+        return true;
+    }
+
+    else
+    {
+        //cout << word << endl;
+        return false;
+    }
+
+
+
+
+
 //    for(int i = 0; i < stopWords.size(); i++)
 //    {
 //        if (word == stopWords[i])
@@ -32,13 +52,14 @@ bool StopRemover::checkWord(string &word)
 //        }
 //    }
 //    return false;
-    if((binary_search(stopWords.begin(), stopWords.end(), word)))
-    {
-        //cout << word << endl;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+//    if((binary_search(stopWords.begin(), stopWords.end(), word)))
+//    {
+//        //cout << word << endl;
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+
 }

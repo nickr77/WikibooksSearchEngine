@@ -12,12 +12,8 @@ private:
 
 public:
     AVLTreeInterface();
-    void addToIndex(std::string &entry, int &entryID);
-    AVLNode* rr_rotation(AVLNode*);
-    AVLNode* ll_rotation(AVLNode*);
-    AVLNode* lr_rotation(AVLNode*);
-    AVLNode* rl_rotation(AVLNode*);
-    AVLNode* balance(AVLNode*);
+    virtual void addToIndex(std::string &entry, int &entryID);
+
 
 };
 

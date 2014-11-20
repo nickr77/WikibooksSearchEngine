@@ -12,7 +12,6 @@ void driver();
 int main()
 {
     driver();
-
 }
 
 void driver()

@@ -28,6 +28,9 @@ void DocParse::parse()
     ifstream inputFile;
     inputFile.open("wikibooks.xml");
     int pageCounter = 0;
+    cout << "Begin Parsing" << endl;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
     if (inputFile.is_open())
     {
         while(!inputFile.eof())
@@ -62,7 +65,8 @@ void DocParse::parse()
                         {
                             title += line[i];
                         }
-                        //cout << ++pageCounter << endl;
+                        pageCounter++;
+                        //cout << pageCounter << endl;
                         title.clear();
                     }
                     else if(curTag == "text xml:space=\"preserve\"")
@@ -106,7 +110,18 @@ void DocParse::parse()
                             }
                             else if(sRemove.checkWord(text) == false)
                             {
-                                stem(text);
+                                if(fStem.isStem(text) == false)
+                                {
+                                    string originalText = text;
+                                    stem(text);
+                                    fStem.insert(originalText, text);
+                                    fStem.isStem(originalText);
+                                    hashIndex.insert(text, pageCounter);
+                                }
+                                else
+                                {
+                                    hashIndex.insert(text, pageCounter);
+                                }
                             }
                             text.clear();
                             counter++;
@@ -129,4 +144,18 @@ void DocParse::parse()
         }
     }
     inputFile.close();
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end-start;
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    cout << "End Parsing" << endl;
+    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
+    string y = " ";
+    while (y != "z")
+    {
+        cout << "Enter a word: " << endl;
+        cin >> y;
+        hashIndex.getPages(y);
+        cout << endl;
+    }
+
 }

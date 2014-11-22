@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     hashtableinterface.cpp \
     tagstack.cpp \
     porter2_stemmer.cpp \
-    avlnode.cpp
+    avlnode.cpp \
+    faststem.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -25,5 +26,6 @@ HEADERS += \
     hashtableinterface.h \
     tagstack.h \
     porter2_stemmer.h \
-    avlnode.h
+    avlnode.h \
+    faststem.h
 

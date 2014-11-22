@@ -4,7 +4,11 @@
 #include "porter2_stemmer.h"
 #include "tagstack.h"
 #include "stopremover.h"
+#include "faststem.h"
+#include "hashtableinterface.h"
 #include <vector>
+#include <chrono>
+#include <ctime>
 class DocParse
 {
 private:
@@ -29,6 +33,8 @@ private:
     std::string text;
     std::string individualWord;
     bool idFound;
+    FastStem fStem;
+    HashTableInterface hashIndex;
 
 
 public:

@@ -32,7 +32,6 @@ void DocParse::parse()
     {
         while(!inputFile.eof())
         {
-            //cout << "Hello" << endl;
             while(getline(inputFile, line))
             {
                 counter = 0;
@@ -50,16 +49,6 @@ void DocParse::parse()
                         {
                             curTag += line[i];
                         }
-
-
-//                        if(line[tagStart] != '/')
-//                        {
-//                            tagStack.push(curTag);
-//                        }
-//                        else //tagStart == '/'
-//                        {
-//                            tagStack.pop();
-//                        }
                     }
                     if(curTag == "title")
                     {
@@ -73,90 +62,57 @@ void DocParse::parse()
                         {
                             title += line[i];
                         }
-                        //cout << "Title: " << title << endl;
                         //cout << ++pageCounter << endl;
                         title.clear();
                     }
-//                    else if(curTag == "id" && tagStack.inList("revision") == false && tagStack.inList("contributor") == false)
-//                    {
-//                        idStart = counter + 1;
-//                        while(line[counter] != '<')
-//                        {
-//                            counter++;
-//                        }
-//                        idEnd = counter -1;
-//                        for(int i = idStart; i <= idEnd; i++)
-//                        {
-//                            idString += line[i];
-//                        }
-//                        id = atoi(idString.c_str());
-//                        //cout << "ID: " << id << endl;
-//                        idString.clear();
-//                    }
                     else if(curTag == "text xml:space=\"preserve\"")
                     {
-                        textStart = counter + 1;
+
 
                         while(line[counter] != '<')
                         {
-
-                            //cout << id << endl;
-                            if(counter >= line.size())
+                            textStart = counter;
+                            while(line[counter] != ' ')
                             {
-                                //cout << "New Line" << endl;
-                                textEnd = counter -1;
-                                for(int i = textStart; i <= textEnd; i++)
+                                if(counter >= line.size())
                                 {
+                                    //cout << "New Line" << endl;
+                                    textEnd = counter -1;
+                                    for(int i = textStart; i <= textEnd; i++)
+                                    {
+                                        text += line[i];
+                                    }
+
+                                    getline(inputFile, line);
+                                    counter = 0;
+                                }
+                                counter++;
+                            }
+
+
+                            textEnd = counter -1;
+                            for(int i = textStart; i <= textEnd; i++)
+                            {
+                                if(line[i] < 97 || line[i] > 122)
+                                {
+                                    text.clear();
+                                }
+                                else
                                     text += line[i];
-                                }
-                                //cout << "Text: " << text << endl;
-
-                                getline(inputFile, line);
-                                //totalCounter = totalCounter + counter;
-                                counter = 0;
                             }
+                            if(text == "")
+                            {
+
+                            }
+                            else if(sRemove.checkWord(text) == false)
+                            {
+                                stem(text);
+                            }
+                            text.clear();
                             counter++;
-
                         }
-                        textEnd = counter -1;
-                        for(int i = textStart; i <= textEnd; i++)
-                        {
-                            text += line[i];
-                        }
-                        stringstream ss(text);
-
-                        while(getline(ss, individualWord, ' '))
-                        {
-
-                            if(individualWord.find('&') != string::npos || individualWord.find(']') != string::npos)
-                            {
-                                //cout << individualWord << endl;
-                            }
-                            else if (individualWord.size() > 20)
-                            {
-                                //cout << individualWord << endl;
-                            }
-                            else
-                            {
-                                //cout << individualWord << endl;
-                                individualWord[0] = tolower(individualWord[0]);
-                                if(individualWord[0] < 'a' || individualWord[0] > 'z')
-                                {
-                                    //cout << individualWord << endl;
-                                }
-                                else if (sRemove.checkWord(individualWord) == false /*|| individualWord.size() > 3*/)
-                                {
-                                    //cout << individualWord << endl;
-                                    stem(individualWord);
-                                    //cout << individualWord << endl;
-                                }
-
-
-                            }
-
-                        }
-                        //cout << "Text: " << text << endl;
                         text.clear();
+
                     }
                     else if(curTag == "text xml:space=\"preserve\" /")
                     {

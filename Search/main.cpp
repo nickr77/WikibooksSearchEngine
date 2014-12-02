@@ -3,20 +3,39 @@
 #include "docparse.h"
 #include <chrono>
 #include <ctime>
+#include <docindex.h>
+#include "indexinterface.h"
+#include "hashtableinterface.h"
+#include "avltreeinterface.h"
 using namespace std;
 using namespace Porter2Stemmer;
-void driver();
+void driver(int argc, char* arguments[]);
 
 
 
-int main()
+int main(int argc, char* arguments[])
 {
-    driver();
+
+    driver(argc, arguments);
 }
 
-void driver()
+void driver(int argc, char *arguments[])
 {
+    string cArg = arguments[1];
     DocParse parser;
+    DocIndex dIndex;
+    if (cArg == "maintain")
+    {
+        cout << "Maintainence Mode" << endl;
+    }
+    if (cArg == "user")
+    {
+        cout << "User Mode" << endl;
+    }
+    if (cArg == "stress")
+    {
+        cout << "Stress Test Mode" << endl;
+    }
 
     parser.parse();
 

@@ -5,14 +5,15 @@
 
 class AVLNode
 {
+    friend class AVLTreeInterface;
 private:
     std::vector<int> pages;
-    std::string word;
+    std::string element;
     AVLNode *right;
     AVLNode *left;
     int height;
 public:
-    AVLNode();
+    AVLNode(std::string theElem, AVLNode* L, AVLNode* R, int h);
     void addEntry(std::string &entry, int &id);
     std::string& getEntry();
     void setRight(AVLNode*);

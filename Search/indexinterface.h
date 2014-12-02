@@ -6,7 +6,10 @@ class IndexInterface
 {
 public:
     IndexInterface();
-    virtual void addToIndex(std::string &entry, int &entryID);
+    virtual void insert(std::string &entry, int &entryID);
+    virtual void getPages(std::string &entry);
+    virtual void writeIndex();
+    virtual int indexSize();
 };
 
 #endif // INDEXINTERFACE_H

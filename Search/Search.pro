@@ -10,10 +10,12 @@ SOURCES += main.cpp \
     indexinterface.cpp \
     avltreeinterface.cpp \
     hashtableinterface.cpp \
-    tagstack.cpp \
     porter2_stemmer.cpp \
     avlnode.cpp \
-    faststem.cpp
+    faststem.cpp \
+    worddata.cpp \
+    pageinfo.cpp \
+    docindex.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -24,8 +26,10 @@ HEADERS += \
     indexinterface.h \
     avltreeinterface.h \
     hashtableinterface.h \
-    tagstack.h \
     porter2_stemmer.h \
     avlnode.h \
-    faststem.h
+    faststem.h \
+    worddata.h \
+    pageinfo.h \
+    docindex.h
 

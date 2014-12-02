@@ -3,22 +3,23 @@
 #include <vector>
 using namespace std;
 
-AVLNode::AVLNode()
+AVLNode::AVLNode(string theElem, AVLNode* L, AVLNode* R, int h)
 {
-    right = nullptr;
-    left = nullptr;
-    height = 0;
+    element = theElem;
+    right = R;
+    left = L;
+    height = h;
 }
 
 void AVLNode::addEntry(string &entry, int &id)
 {
-    word = entry;
+    element = entry;
     pages.push_back(id);
 }
 
 string& AVLNode::getEntry()
 {
-    return word;
+    return element;
 }
 
 void AVLNode::setLeft(AVLNode *x)

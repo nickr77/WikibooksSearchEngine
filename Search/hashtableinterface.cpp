@@ -1,5 +1,4 @@
 #include "hashtableinterface.h"
-
 HashTableInterface::HashTableInterface()
 {
 }
@@ -34,4 +33,23 @@ void HashTableInterface::getPages(std::string &query)
             std::cout << std::endl;
         }
     }
+}
+void HashTableInterface::writeIndex()
+{
+    std::ofstream outputFile;
+
+    outputFile.open("index.txt");
+    for(printer = mapIndex.begin(); printer != mapIndex.end(); ++printer)
+    {
+        std::vector<int> pageList = printer->second;
+
+        outputFile << printer->first << std::endl;
+        for (int i = 0; i < pageList.size(); i++)
+        {
+            outputFile << pageList[i] << " ";
+        }
+        pageList.clear();
+        outputFile << std::endl;
+    }
+    outputFile.close();
 }

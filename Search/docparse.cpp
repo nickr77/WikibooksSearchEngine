@@ -66,7 +66,7 @@ void DocParse::parse()
                             title += line[i];
                         }
                         pageCounter++;
-                        //cout << pageCounter << endl;
+                        cout << pageCounter << endl;
                         title.clear();
                     }
                     else if(curTag == "text xml:space=\"preserve\"")
@@ -108,7 +108,7 @@ void DocParse::parse()
                             {
 
                             }
-                            else if(sRemove.checkWord(text) == false)
+                            else if(sRemove.checkWord(text) == false && text.size() < 20)
                             {
                                 if(fStem.isStem(text) == false)
                                 {
@@ -149,11 +149,15 @@ void DocParse::parse()
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
     cout << "End Parsing" << endl;
     cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
+    cout << "Index contains " << hashIndex.indexSize() << " elements." << endl;
+    cout << "Writing Index" << endl;
+    hashIndex.writeIndex();
     string y = " ";
     while (y != "z")
     {
         cout << "Enter a word: " << endl;
         cin >> y;
+        stem(y);
         hashIndex.getPages(y);
         cout << endl;
     }

@@ -5,9 +5,9 @@ PageInfo::PageInfo()
 
 }
 
-void PageInfo::setInfo(std::string &name, std::string &auth, std::string &time)
+void PageInfo::setInfo(std::string &auth, std::string &time, string &titl)
 {
-    title = name;
+    title = titl;
     author = auth;
     date = time;
 }
@@ -26,3 +26,5 @@ string PageInfo::getTitle()
 {
     return title;
 }
+
+

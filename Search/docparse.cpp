@@ -1,9 +1,9 @@
 #include "docparse.h"
-#include "tagstack.h"
 #include "porter2_stemmer.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <docindex.h>
 using namespace std;
 using namespace Porter2Stemmer;
 
@@ -15,6 +15,10 @@ DocParse::DocParse()
     totalCounter = 0;
     titleStart = 0;
     titleEnd = 0;
+    timestampStart = 0;
+    timestampEnd = 0;
+    usernameStart = 0;
+    usernameEnd = 0;
     idStart = 0;
     idEnd = 0;
     id = 0;
@@ -23,7 +27,7 @@ DocParse::DocParse()
     idFound = false;
 }
 
-void DocParse::parse()
+void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
 {
     ifstream inputFile;
     inputFile.open("wikibooks.xml");
@@ -66,8 +70,35 @@ void DocParse::parse()
                             title += line[i];
                         }
                         pageCounter++;
-                        cout << pageCounter << endl;
-                        title.clear();
+                    }
+                    else if(curTag == "timestamp")
+                    {
+                        timestampStart = counter + 1;
+                        while(line[counter] != '<')
+                        {
+                            counter++;
+                        }
+                        timestampEnd = counter -1;
+                        for(int i = timestampStart; i <= timestampEnd; i++)
+                        {
+                            timestamp += line[i];
+                        }
+                        //cout << timestamp << endl;
+                    }
+                    else if(curTag == "username")
+                    {
+                        usernameStart = counter + 1;
+                        while(line[counter] != '<')
+                        {
+                            counter++;
+                        }
+                        usernameEnd = counter -1;
+                        for(int i = usernameStart; i <= usernameEnd; i++)
+                        {
+                            username += line[i];
+                        }
+                        //cout << username << endl;
+                        dIndex.insert(pageCounter, title, username, timestamp);
                     }
                     else if(curTag == "text xml:space=\"preserve\"")
                     {
@@ -108,7 +139,7 @@ void DocParse::parse()
                             {
 
                             }
-                            else if(sRemove.checkWord(text) == false && text.size() < 20)
+                            else if(sRemove.checkWord(text) == false)
                             {
                                 if(fStem.isStem(text) == false)
                                 {
@@ -116,17 +147,20 @@ void DocParse::parse()
                                     stem(text);
                                     fStem.insert(originalText, text);
                                     fStem.isStem(originalText);
-                                    hashIndex.insert(text, pageCounter);
+                                    myIndex->insert(text, pageCounter);
                                 }
                                 else
                                 {
-                                    hashIndex.insert(text, pageCounter);
+                                    myIndex->insert(text, pageCounter);
                                 }
                             }
                             text.clear();
                             counter++;
                         }
                         text.clear();
+                        title.clear();
+                        timestamp.clear();
+                        username.clear();
 
                     }
                     else if(curTag == "text xml:space=\"preserve\" /")
@@ -149,17 +183,19 @@ void DocParse::parse()
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
     cout << "End Parsing" << endl;
     cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
-    cout << "Index contains " << hashIndex.indexSize() << " elements." << endl;
-    cout << "Writing Index" << endl;
-    hashIndex.writeIndex();
     string y = " ";
+    dIndex.writeIndex();
+    myIndex->writeIndex();
     while (y != "z")
     {
         cout << "Enter a word: " << endl;
         cin >> y;
         stem(y);
-        hashIndex.getPages(y);
+        myIndex->getPages(y);
         cout << endl;
     }
 
 }
+
+
+

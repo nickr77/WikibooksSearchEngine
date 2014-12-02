@@ -9,10 +9,11 @@ private:
     std::string date;
 public:
     PageInfo();
-    void setInfo(std::string&, std::string&, std::string&);
+    void setInfo(std::string &auth, std::string &time, std::string &titl);
     std::string getTitle();
     std::string getAuthor();
     std::string getDate();
+    int getID();
 };
 
 #endif // PAGEINFO_H

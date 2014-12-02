@@ -2,18 +2,22 @@
 #define DOCPARSE_H
 #include <string>
 #include "porter2_stemmer.h"
-#include "tagstack.h"
 #include "stopremover.h"
 #include "faststem.h"
 #include "hashtableinterface.h"
+#include "avltreeinterface.h"
+#include "indexinterface.h"
+#include "docindex.h"
 #include <vector>
 #include <chrono>
 #include <ctime>
+using namespace std;
+
 class DocParse
 {
 private:
     StopRemover sRemove;
-    //TagStack tagStack;
+
     std::vector<std::string> strVec;
     std::string line;
     int tagStart;
@@ -24,6 +28,12 @@ private:
     int titleStart;
     int titleEnd;
     std::string title;
+    int timestampStart;
+    int timestampEnd;
+    std::string timestamp;
+    int usernameStart;
+    int usernameEnd;
+    std::string username;
     int idStart;
     int idEnd;
     std::string idString;
@@ -34,12 +44,14 @@ private:
     std::string individualWord;
     bool idFound;
     FastStem fStem;
-    HashTableInterface hashIndex;
 
 
 public:
     DocParse();
-    void parse();
+    void parse(IndexInterface* &myIndex, DocIndex &dIndex);
 };
 
 #endif // DOCPARSE_H
+
+
+

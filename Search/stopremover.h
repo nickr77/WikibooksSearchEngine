@@ -1,7 +1,10 @@
 #ifndef STOPREMOVER_H
 #define STOPREMOVER_H
 #include <string>
+#include <sstream>
+#include <iostream>
 #include <unordered_set>
+using namespace std;
 class StopRemover
 {
 private:

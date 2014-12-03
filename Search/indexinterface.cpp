@@ -4,13 +4,13 @@ IndexInterface::IndexInterface()
 {
 }
 
-void IndexInterface::insert(std::string &entry, int &entryID)
+void IndexInterface::insert(std::string &word, int &page)
 {
 
 
 }
 
-void IndexInterface::getPages(std::string &entry)
+void IndexInterface::getPages(std::string &query, std::vector<int> &pageList)
 {
 
 

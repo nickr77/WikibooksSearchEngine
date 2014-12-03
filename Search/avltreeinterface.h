@@ -3,24 +3,28 @@
 #include "indexinterface.h"
 #include "avlnode.h"
 #include <string>
+#include <sstream>
+#include <iostream>
+using namespace std;
 class AVLTreeInterface : public IndexInterface
 {
 private:
     AVLNode* root;
     int heightCounter;
 
-    void insert(std::string val, int num, AVLNode*& t);
+    void insert(string &val, int &num, AVLNode*& t);
     int height(AVLNode *t);
     void rotateWithLeftChild(AVLNode*& k1);
     void rotateWithRightChild(AVLNode*& k1);
     void doubleWithLeftChild(AVLNode*& k3);
     void doubleWithRightChild(AVLNode*& k3);
+    void search(string &val, AVLNode *&t);
 
 public:
     AVLTreeInterface();
 
-    virtual void insert(std::string &entry, int num);
-    virtual void getPages(std::string &entry);
+    virtual void insert(std::string &word, int &page);
+    virtual void getPages(std::string &entry, std::vector<int> &myList);
     virtual void writeIndex();
     virtual int indexSize();
 

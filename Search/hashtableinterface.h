@@ -4,7 +4,10 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
 #include "indexinterface.h"
+using namespace std;
 class HashTableInterface : public IndexInterface
 {
 private:
@@ -14,7 +17,7 @@ private:
 public:
     HashTableInterface();
     virtual void insert(std::string &word, int &page);
-    virtual void getPages(std::string &query);
+    virtual void getPages(std::string &query, std::vector<int> &pageList);
     virtual int indexSize() {return mapIndex.size();}
     virtual void writeIndex();
 };

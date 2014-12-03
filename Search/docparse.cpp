@@ -193,15 +193,15 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
 
     dIndex.writeIndex();
     myIndex->writeIndex();
-    string y = " ";
-    while (y != "z")
-    {
-        cout << "Enter a word: " << endl;
-        cin >> y;
-        stem(y);
-        myIndex->getPages(y);
-        cout << endl;
-    }
+//    string y = " ";
+//    while (y != "z")
+//    {
+//        cout << "Enter a word: " << endl;
+//        cin >> y;
+//        stem(y);
+//        myIndex->getPages(y);
+//        cout << endl;
+//    }
 
 }
 
@@ -266,12 +266,13 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
     cout << "End Parsing" << endl;
     cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
     string y = " ";
+    vector<int> ax = {0};
     while (y != "z")
     {
         cout << "Enter a word: " << endl;
         cin >> y;
         stem(y);
-        myIndex->getPages(y);
+        myIndex->getPages(y, ax);
         cout << endl;
     }
 

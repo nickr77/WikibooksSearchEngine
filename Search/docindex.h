@@ -3,7 +3,10 @@
 #include <unordered_map>
 #include <pageinfo.h>
 #include <fstream>
-
+#include <string>
+#include <sstream>
+#include <iostream>
+using namespace std;
 class DocIndex
 {
 private:

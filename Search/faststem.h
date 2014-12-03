@@ -1,7 +1,10 @@
 #ifndef FASTSTEM_H
 #define FASTSTEM_H
 #include <unordered_map>
-
+#include <string>
+#include <sstream>
+#include <iostream>
+using namespace std;
 class FastStem
 {
 private:

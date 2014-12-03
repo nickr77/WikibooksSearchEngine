@@ -9,12 +9,14 @@ AVLNode::AVLNode(string theElem, AVLNode* L, AVLNode* R, int h)
     right = R;
     left = L;
     height = h;
+    //cout << "Balls" << endl;
 }
 
 void AVLNode::addEntry(string &entry, int &id)
 {
     element = entry;
     pages.push_back(id);
+    //cout << element << endl;
 }
 
 string& AVLNode::getEntry()
@@ -49,4 +51,12 @@ AVLNode* AVLNode::getLeft()
 AVLNode* AVLNode::getRight()
 {
     return right;
+}
+
+void AVLNode::getPages()
+{
+    for(int i = 0; i < pages.size(); i++)
+    {
+        cout << pages[i] << endl;
+    }
 }

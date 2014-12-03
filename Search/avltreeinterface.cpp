@@ -8,9 +8,10 @@ AVLTreeInterface::AVLTreeInterface()
     heightCounter = 0;
 }
 
-void AVLTreeInterface::insert(string &entry, int num)
+void AVLTreeInterface::insert(string &word, int &page)
 {
-    insert(entry, num, root);
+    //cout << "Balls" << endl;
+    insert(word, page, root);
 }
 
 int AVLTreeInterface::height(AVLNode *t)
@@ -23,11 +24,17 @@ int AVLTreeInterface::height(AVLNode *t)
         return t->height;
 }
 
-void AVLTreeInterface::insert(string val, int num, AVLNode* &t)
+void AVLTreeInterface::insert(string &val, int &num, AVLNode* &t)
 {
+
     if(t == nullptr)
     {
         t = new AVLNode(val, nullptr,nullptr, heightCounter);
+        t->addEntry(val, num);
+    }
+    else if (t->element == val)
+    {
+        t->addEntry(val, num);
     }
     else if(val < t->element)
     {
@@ -51,11 +58,13 @@ void AVLTreeInterface::insert(string val, int num, AVLNode* &t)
         {
             if(val < t->right->element)
             {
-                rotateWithRightChild(t);
+                //cout << "D3" << endl;
+                doubleWithRightChild(t);
             }
             else
             {
-                doubleWithRightChild(t);
+                //cout << "D4" << endl;
+                rotateWithRightChild(t);
             }
         }
     }
@@ -65,8 +74,11 @@ void AVLTreeInterface::insert(string val, int num, AVLNode* &t)
 void AVLTreeInterface::rotateWithLeftChild(AVLNode*& k1)
 {
 AVLNode* k2 = k1->left;
+//cout << "Debug 3" << endl;
 k1->left = k2->right;
+//cout << "Debug 5" << endl;
 k2->right = k1;
+
 k1->height = max(height(k1->left), height(k1->right)) +1;
 k2->height = max(height(k2->left), height(k2->right)) +1;
 k1 = k2;
@@ -90,13 +102,13 @@ rotateWithLeftChild(k3);
 
 void AVLTreeInterface::doubleWithRightChild(AVLNode*& k3)
 {
-rotateWithLeftChild(k3->right);
-rotateWithRightChild(k3);
+    rotateWithLeftChild(k3->right);
+    rotateWithRightChild(k3);
 }
 
-void AVLTreeInterface::getPages(string &entry)
+void AVLTreeInterface::getPages(string &entry, std::vector<int> &myList)
 {
-
+    search(entry, root);
 }
 
 int AVLTreeInterface::indexSize()
@@ -108,4 +120,27 @@ void AVLTreeInterface::writeIndex()
 {
 
 }
+
+void AVLTreeInterface::search(string &val, AVLNode* &t)
+{
+    if(t == nullptr)
+    {
+        cout << "0" << endl;
+    }
+    else if (t->getEntry() == val)
+    {
+        t->getPages();
+    }
+
+    else if(val < t->element)
+    {
+        search(val, t->left);
+    }
+    else if (t->element < val)
+    {
+        search(val, t->right);
+    }
+
+}
+
 

@@ -2,7 +2,9 @@
 #define AVLNODE_H
 #include <vector>
 #include <string>
-
+#include <sstream>
+#include <iostream>
+using namespace std;
 class AVLNode
 {
     friend class AVLTreeInterface;
@@ -22,6 +24,7 @@ public:
     AVLNode* getLeft();
     int &getHeight();
     void setHeight(int &h);
+    void getPages();
 };
 
 #endif // AVLNODE_H

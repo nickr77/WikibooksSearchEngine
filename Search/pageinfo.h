@@ -1,6 +1,9 @@
 #ifndef PAGEINFO_H
 #define PAGEINFO_H
 #include <string>
+#include <sstream>
+#include <iostream>
+using namespace std;
 class PageInfo
 {
 private:

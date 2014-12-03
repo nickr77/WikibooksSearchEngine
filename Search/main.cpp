@@ -8,6 +8,7 @@
 #include "hashtableinterface.h"
 #include "avltreeinterface.h"
 #include "docindex.h"
+#include "queryprocessor.h"
 using namespace std;
 using namespace Porter2Stemmer;
 void driver(int argc, char* arguments[]);
@@ -26,6 +27,8 @@ void driver(int argc, char *arguments[])
     DocParse parser;
     DocIndex dIndex;
     IndexInterface* myIndex = new HashTableInterface();
+    //IndexInterface* myIndex = new AVLTreeInterface();
+    QueryProcessor qProcessor;
     if (cArg == "maintain")
     {
         cout << "Maintainence Mode" << endl;
@@ -35,6 +38,7 @@ void driver(int argc, char *arguments[])
     {
         cout << "User Mode" << endl;
         parser.readIndex(myIndex, dIndex);
+        //qProcessor.displayFrequency(myIndex);
     }
     if (cArg == "stress")
     {

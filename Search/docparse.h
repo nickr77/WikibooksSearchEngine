@@ -11,6 +11,8 @@
 #include <vector>
 #include <chrono>
 #include <ctime>
+#include <sstream>
+#include <iostream>
 using namespace std;
 
 class DocParse

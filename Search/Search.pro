@@ -5,31 +5,32 @@ CONFIG -= qt
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    docparse.cpp \
-    stopremover.cpp \
-    indexinterface.cpp \
-    avltreeinterface.cpp \
-    hashtableinterface.cpp \
-    porter2_stemmer.cpp \
     avlnode.cpp \
+    avltreeinterface.cpp \
+    docindex.cpp \
+    docparse.cpp \
     faststem.cpp \
-    worddata.cpp \
+    hashtableinterface.cpp \
+    indexinterface.cpp \
     pageinfo.cpp \
-    docindex.cpp
-
-include(deployment.pri)
-qtcAddDeployment()
+    porter2_stemmer.cpp \
+    stopremover.cpp \
+    tagstack.cpp \
+    worddata.cpp \
+    queryprocessor.cpp
 
 HEADERS += \
-    docparse.h \
-    stopremover.h \
-    indexinterface.h \
-    avltreeinterface.h \
-    hashtableinterface.h \
-    porter2_stemmer.h \
     avlnode.h \
+    avltreeinterface.h \
+    docindex.h \
+    docparse.h \
     faststem.h \
-    worddata.h \
+    hashtableinterface.h \
+    indexinterface.h \
     pageinfo.h \
-    docindex.h
+    porter2_stemmer.h \
+    stopremover.h \
+    tagstack.h \
+    worddata.h \
+    queryprocessor.h
 

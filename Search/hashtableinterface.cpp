@@ -19,9 +19,24 @@ void HashTableInterface::insert(std::string &word, int &page)
     }
 }
 
-void HashTableInterface::getPages(std::string &query)
+void HashTableInterface::getPages(std::string &query, std::vector<int> &pageList)
 {
-    std::vector<int> pageList = mapIndex[query];
+    cout << "enter" << endl;
+    found = mapIndex.find(query);
+    cout << mapIndex.size() << endl;
+    if (found != mapIndex.end())
+    {
+        cout << "pre" << endl;
+        pageList = found->second;
+        cout << "post" << endl;
+    }
+    else
+        pageList.push_back(0);
+
+    for(int i = 0; i < pageList.size(); i++)
+    {
+        cout << pageList[i] << endl;
+    }
     std::cout << query << std::endl;
     int counter = 0;
     for (int x = 0; x < pageList.size(); x++)

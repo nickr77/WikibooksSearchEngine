@@ -29,16 +29,15 @@ void driver(int argc, char *arguments[])
     if (cArg == "maintain")
     {
         cout << "Maintainence Mode" << endl;
+        parser.parse(myIndex, dIndex);
     }
     if (cArg == "user")
     {
         cout << "User Mode" << endl;
+        parser.readIndex(myIndex, dIndex);
     }
     if (cArg == "stress")
     {
         cout << "Stress Test Mode" << endl;
     }
-
-    parser.parse(myIndex, dIndex);
-
 }

@@ -115,7 +115,13 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
                                     textEnd = counter -1;
                                     for(int i = textStart; i <= textEnd; i++)
                                     {
-                                        text += line[i];
+                                        if(line[i] < 'a' || line[i] > 'z')
+                                        {
+                                            text.clear();
+                                            i = ++textEnd;
+                                        }
+                                        else
+                                            text += line[i];
                                     }
 
                                     getline(inputFile, line);
@@ -128,9 +134,10 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
                             textEnd = counter -1;
                             for(int i = textStart; i <= textEnd; i++)
                             {
-                                if(line[i] < 97 || line[i] > 122)
+                                if(line[i] < 'a' || line[i] > 'z')
                                 {
                                     text.clear();
+                                    i = ++textEnd;
                                 }
                                 else
                                     text += line[i];
@@ -183,9 +190,82 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
     cout << "End Parsing" << endl;
     cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
-    string y = " ";
+
     dIndex.writeIndex();
     myIndex->writeIndex();
+    string y = " ";
+    while (y != "z")
+    {
+        cout << "Enter a word: " << endl;
+        cin >> y;
+        stem(y);
+        myIndex->getPages(y);
+        cout << endl;
+    }
+
+}
+
+void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
+{
+    ifstream inputFile;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    inputFile.open("index.txt");
+    if (inputFile.is_open())
+    {
+        int count = 0;
+        while(!inputFile.eof())
+        {
+
+            getline(inputFile, line);
+            text = line;
+            getline(inputFile, line);
+            counter = 0;
+            while(counter < line.size() - 1)
+            {
+                idStart = counter;
+                while(line[counter] != ' ')
+                {
+                    counter++;
+                }
+                idEnd = counter - 1;
+                for(int i = idStart; i <= idEnd; i++)
+                {
+                    idString += line[i];
+                }
+                istringstream(idString) >> id;
+                myIndex->insert(text, id);
+                idString.clear();
+                counter++;
+            }
+        }
+    }
+    inputFile.close();
+
+    inputFile.open("docs.txt");
+    if (inputFile.is_open())
+    {
+        while(!inputFile.eof())
+        {
+            getline(inputFile, line);
+            idString = line;
+            istringstream(idString) >> id;
+            getline(inputFile, line);
+            title = line;
+            getline(inputFile, line);
+            username = line;
+            getline(inputFile, line);
+            timestamp = line;
+            dIndex.insert(id, title, username, timestamp);
+        }
+    }
+    inputFile.close();
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end-start;
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    cout << "End Parsing" << endl;
+    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
+    string y = " ";
     while (y != "z")
     {
         cout << "Enter a word: " << endl;

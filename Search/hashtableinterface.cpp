@@ -51,5 +51,7 @@ void HashTableInterface::writeIndex()
         pageList.clear();
         outputFile << std::endl;
     }
+    outputFile << "c." << std::endl;
+    outputFile << "1" ;
     outputFile.close();
 }

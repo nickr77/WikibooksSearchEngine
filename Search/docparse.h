@@ -49,6 +49,7 @@ private:
 public:
     DocParse();
     void parse(IndexInterface* &myIndex, DocIndex &dIndex);
+    void readIndex(IndexInterface* &myIndex, DocIndex &dIndex);
 };
 
 #endif // DOCPARSE_H

@@ -118,7 +118,35 @@ int AVLTreeInterface::indexSize()
 
 void AVLTreeInterface::writeIndex()
 {
+    ofstream outputFile;
+    outputFile.open("index.txt");
+    if (outputFile.is_open())
+    {
+        writeIndex(root, outputFile);
+        outputFile << "c." << endl;
+        outputFile << "1" ;
+    }
+    else
+        cout << "Could not write to index" << endl;
 
+    outputFile.close();
+
+}
+
+void AVLTreeInterface::writeIndex(AVLNode *t, ofstream &outputFile)
+{
+    if (t == nullptr)
+    {
+        return;
+    }
+    writeIndex(t->left, outputFile);
+    writeIndex(t->right, outputFile);
+    outputFile << t->element << endl;
+    for (int i = 0; i < t->pages.size(); i++)
+    {
+        outputFile << t->pages[i] << " ";
+    }
+    outputFile << endl;
 }
 
 void AVLTreeInterface::search(string &val, AVLNode* &t)

@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 using namespace std;
 class AVLTreeInterface : public IndexInterface
 {
@@ -19,6 +20,7 @@ private:
     void doubleWithLeftChild(AVLNode*& k3);
     void doubleWithRightChild(AVLNode*& k3);
     void search(string &val, AVLNode *&t);
+    void writeIndex(AVLNode *t, ofstream &outputFile);
 
 public:
     AVLTreeInterface();

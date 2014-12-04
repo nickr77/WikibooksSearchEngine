@@ -26,8 +26,8 @@ void driver(int argc, char *arguments[])
     string cArg = arguments[1];
     DocParse parser;
     DocIndex dIndex;
-    IndexInterface* myIndex = new HashTableInterface();
-    //IndexInterface* myIndex = new AVLTreeInterface();
+    //IndexInterface* myIndex = new HashTableInterface();
+    IndexInterface* myIndex = new AVLTreeInterface();
     QueryProcessor qProcessor;
     if (cArg == "maintain")
     {

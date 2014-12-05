@@ -30,8 +30,9 @@ DocParse::DocParse()
 void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileName)
 {
     ifstream inputFile;
-    inputFile.open("wikibooks.xml");
-    int pageCounter = 0;
+    inputFile.open(fileName.c_str());
+    int pageCounter = dIndex.getSize();
+    //cout << pageCounter << endl;
     cout << "Begin Parsing" << endl;
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
@@ -70,6 +71,7 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                             title += line[i];
                         }
                         pageCounter++;
+                        dIndex.insertTitle(pageCounter, title);
                     }
                     else if(curTag == "timestamp")
                     {
@@ -84,6 +86,7 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                             timestamp += line[i];
                         }
                         //cout << timestamp << endl;
+                        dIndex.insertTime(pageCounter, timestamp);
                     }
                     else if(curTag == "username")
                     {
@@ -98,7 +101,7 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                             username += line[i];
                         }
                         //cout << username << endl;
-                        dIndex.insert(pageCounter, title, username, timestamp);
+                        dIndex.insertAuthor(pageCounter, username);
                     }
                     else if(curTag == "text xml:space=\"preserve\"")
                     {
@@ -208,8 +211,8 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
 void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
 {
     ifstream inputFile;
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    start = std::chrono::system_clock::now();
+//    std::chrono::time_point<std::chrono::system_clock> start, end;
+//    start = std::chrono::system_clock::now();
     inputFile.open("index.txt");
     if (inputFile.is_open())
     {
@@ -260,11 +263,11 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
         }
     }
     inputFile.close();
-    end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-    cout << "End Parsing" << endl;
-    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
+//    end = std::chrono::system_clock::now();
+//    std::chrono::duration<double> elapsed_seconds = end-start;
+//    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+//    cout << "End Parsing" << endl;
+//    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
     //string y = " ";
     //vector<int> ax = {0};
 //    while (y != "z")

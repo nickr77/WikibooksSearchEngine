@@ -2,7 +2,9 @@
 using namespace std;
 PageInfo::PageInfo()
 {
-
+    title = "N/A";
+    author = "N/A";
+    date = "N/A";
 }
 
 void PageInfo::setInfo(std::string &auth, std::string &time, string &titl)
@@ -27,4 +29,17 @@ string PageInfo::getTitle()
     return title;
 }
 
+void PageInfo::setTitle(string &titl)
+{
+    title = titl;
+}
 
+void PageInfo::setAuthor(string &auth)
+{
+    author = auth;
+}
+
+void PageInfo::setDate(string &time)
+{
+    date = time;
+}

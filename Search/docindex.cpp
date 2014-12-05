@@ -3,14 +3,38 @@
 DocIndex::DocIndex()
 {
 }
+void DocIndex::insert(int &id, string &title, string &author, string &time)
+{
+    PageInfo page;
+    page.setInfo(author, time, title);
+    dIndex.insert(std::make_pair(id, page));
+}
 
-void DocIndex::insert(int &id, std::string &title, std::string &author, std::string &date)
+void DocIndex::insertTitle(int &id, std::string &title)
 {
 
         PageInfo page;
-        page.setInfo(author, date, title);
+        page.setTitle(title);
         dIndex.insert(std::make_pair(id, page));
 
+}
+
+void DocIndex::insertAuthor(int &id, string &author)
+{
+    found = dIndex.find(id);
+    if (found != dIndex.end())
+    {
+        dIndex[id].setAuthor(author);
+    }
+}
+
+void DocIndex::insertTime(int &id, string &time)
+{
+    found = dIndex.find(id);
+    if (found != dIndex.end())
+    {
+        dIndex[id].setDate(time);
+    }
 }
 
 void DocIndex::writeIndex()
@@ -32,4 +56,9 @@ void DocIndex::clearIndex()
 {
     dIndex.clear();
     remove("docs.txt");
+}
+
+int DocIndex::getSize()
+{
+    return dIndex.size();
 }

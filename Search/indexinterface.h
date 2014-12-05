@@ -13,6 +13,7 @@ public:
     virtual void getPages(std::string &query, std::vector<int> &pageList);
     virtual void writeIndex();
     virtual int indexSize();
+    virtual void clearIndex();
 };
 
 #endif // INDEXINTERFACE_H

@@ -17,6 +17,7 @@ public:
     DocIndex();
     void insert(int&id, std::string&title, std::string&author, std::string&date);
     void writeIndex();
+    void clearIndex();
 };
 
 #endif // DOCINDEX_H

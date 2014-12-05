@@ -70,3 +70,10 @@ void HashTableInterface::writeIndex()
     outputFile << "1" ;
     outputFile.close();
 }
+
+void HashTableInterface::clearIndex()
+{
+    mapIndex.clear();
+    remove("index.txt");
+
+}

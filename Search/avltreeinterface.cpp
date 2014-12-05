@@ -153,7 +153,7 @@ void AVLTreeInterface::search(string &val, AVLNode* &t)
 {
     if(t == nullptr)
     {
-        cout << "0" << endl;
+        return;
     }
     else if (t->getEntry() == val)
     {
@@ -168,6 +168,24 @@ void AVLTreeInterface::search(string &val, AVLNode* &t)
     {
         search(val, t->right);
     }
+
+}
+
+void AVLTreeInterface::clearIndex() //public interface function
+{
+    clearIndex(root);
+    remove("index.txt");
+}
+
+void AVLTreeInterface::clearIndex(AVLNode *t) //private function
+{
+    if (t == nullptr)
+    {
+        return;
+    }
+    clearIndex(t->left);
+    clearIndex(t->right);
+    free(t);
 
 }
 

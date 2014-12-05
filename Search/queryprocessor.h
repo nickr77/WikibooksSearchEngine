@@ -41,6 +41,7 @@ private:
     std::vector<int> andWordIntersection;
     std::vector<int> orWordIntersection;
     std::vector<int> notWordIntersection;
+    std::vector<int> finalPageList;
     std::vector<int> frequency;
     int firstIndex;
     int lastIndex;
@@ -49,6 +50,7 @@ private:
     void remove(std::vector<int> & list, const int & item);
     void frequencySort(vector<int> &pageList, vector<int> &frequency, int &firstIndex, int &lastIndex);
     string search(IndexInterface *&myIndex);
+    void frequencyTracker(vector<int> &originalPageList, vector<int> finalPageList, vector<int> &frequency);
 public:
     QueryProcessor();
     void displayFrequency(IndexInterface *&myIndex);

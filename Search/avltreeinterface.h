@@ -21,6 +21,7 @@ private:
     void doubleWithRightChild(AVLNode*& k3);
     void search(string &val, AVLNode *&t);
     void writeIndex(AVLNode *t, ofstream &outputFile);
+    void clearIndex(AVLNode *t);
 
 public:
     AVLTreeInterface();
@@ -29,6 +30,7 @@ public:
     virtual void getPages(std::string &entry, std::vector<int> &myList);
     virtual void writeIndex();
     virtual int indexSize();
+    virtual void clearIndex();
 
 };
 

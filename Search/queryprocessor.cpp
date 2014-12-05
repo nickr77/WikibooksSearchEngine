@@ -106,6 +106,7 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             {
                 remove(andWordIntersection, notWordList.at(i));
             }
+            frequencyTracker(andWordIntersection, finalPageList, frequency);
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(andWordIntersection, frequency, firstIndex, lastIndex);
@@ -127,6 +128,7 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             {
                 remove(orWordIntersection, notWordList.at(i));
             }
+            frequencyTracker(orWordIntersection, finalPageList, frequency);
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(orWordIntersection, frequency, firstIndex, lastIndex);
@@ -142,6 +144,7 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             myIndex->getPages(andWord1, andWord1List);
             myIndex->getPages(andWord2, andWord2List);
             intersection(andWord1List, andWord2List, andWordIntersection);
+            frequencyTracker(andWordIntersection, finalPageList, frequency);
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(andWordIntersection, frequency, firstIndex, lastIndex);
@@ -157,6 +160,7 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             myIndex->getPages(orWord1, orWord1List);
             myIndex->getPages(orWord2, orWord2List);
             disjunction(orWord1List, orWord2List, orWordIntersection);
+            frequencyTracker(orWordIntersection, finalPageList, frequency);
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(orWordIntersection, frequency, firstIndex, lastIndex);
@@ -175,6 +179,7 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             {
                 remove(singleSearchWordList, notWordList.at(i));
             }
+            frequencyTracker(singleSearchWordList, finalPageList, frequency);
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(singleSearchWordList, frequency, firstIndex, lastIndex);
@@ -191,6 +196,8 @@ std::string QueryProcessor::search(IndexInterface *&myIndex)
             cout << singleSearchWord << endl;
             myIndex->getPages(singleSearchWord, singleSearchWordList);
             cout << "Got Pages" << endl;
+            frequencyTracker(singleSearchWordList, finalPageList, frequency);
+            cout << "Got Frequency List" << endl;
             firstIndex = 0;
             lastIndex = 1;
             frequencySort(singleSearchWordList, frequency, firstIndex, lastIndex);
@@ -217,8 +224,8 @@ void QueryProcessor::disjunction(std::vector<int> &list1, std::vector<int> &list
     sort(list2.begin(), list2.end());
 
     std::merge(list1.begin(), list1.end(), list2.begin(), list2.end(), std::back_inserter(list3));
-    vector<int> ::iterator pte = std::unique(list3.begin(), list3.end());
-    list3.erase(pte, list3.end());
+//    vector<int> ::iterator pte = std::unique(list3.begin(), list3.end());
+//    list3.erase(pte, list3.end());
 
 }
 
@@ -265,9 +272,31 @@ void QueryProcessor::frequencySort(vector<int> &pageList, vector<int> &frequency
        }
     }
     cout << "End Freq Sort" << endl;
-    for(int i = 0; i < frequency.size(); i++)
-    {
-        cout << frequency[i] << endl;
-    }
+//    for(int i = 0; i < frequency.size(); i++)
+//    {
+//        cout << frequency[i] << endl;
+//    }
 }
 
+void QueryProcessor::frequencyTracker(vector<int> &originalPageList, vector<int> finalPageList, vector<int> &frequency)
+{
+    int freqTrack = 0;
+    counter = 1;
+    finalPageList.push_back(originalPageList[0]);
+    frequency.push_back(counter);
+    for(int i = 0; i < originalPageList.size(); i++)
+    {
+        if(originalPageList[i] == originalPageList[i+1])
+        {
+            counter++;
+            frequency[freqTrack] == counter;
+        }
+        else
+        {
+            finalPageList.push_back(originalPageList[i + 1]);
+            freqTrack++;
+            counter = 1;
+            frequency.push_back(counter);
+        }
+    }
+}

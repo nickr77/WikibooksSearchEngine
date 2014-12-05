@@ -26,3 +26,8 @@ int IndexInterface::indexSize()
 {
 
 }
+
+void IndexInterface::clearIndex()
+{
+
+}

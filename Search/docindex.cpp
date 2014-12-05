@@ -27,3 +27,9 @@ void DocIndex::writeIndex()
         outputFile << p.getDate() << std::endl;
     }
 }
+
+void DocIndex::clearIndex()
+{
+    dIndex.clear();
+    remove("docs.txt");
+}

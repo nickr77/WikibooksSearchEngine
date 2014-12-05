@@ -20,6 +20,7 @@ public:
     virtual void getPages(std::string &query, std::vector<int> &pageList);
     virtual int indexSize() {return mapIndex.size();}
     virtual void writeIndex();
+    virtual void clearIndex();
 };
 
 #endif // HASHTABLEINTERFACE_H

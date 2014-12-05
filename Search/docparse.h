@@ -50,7 +50,7 @@ private:
 
 public:
     DocParse();
-    void parse(IndexInterface* &myIndex, DocIndex &dIndex);
+    void parse(IndexInterface* &myIndex, DocIndex &dIndex, std::string &fileName);
     void readIndex(IndexInterface* &myIndex, DocIndex &dIndex);
 };
 

@@ -27,7 +27,7 @@ DocParse::DocParse()
     idFound = false;
 }
 
-void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex)
+void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileName)
 {
     ifstream inputFile;
     inputFile.open("wikibooks.xml");
@@ -265,16 +265,16 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
     cout << "End Parsing" << endl;
     cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
-    string y = " ";
-    vector<int> ax = {0};
-    while (y != "z")
-    {
-        cout << "Enter a word: " << endl;
-        cin >> y;
-        stem(y);
-        myIndex->getPages(y, ax);
-        cout << endl;
-    }
+    //string y = " ";
+    //vector<int> ax = {0};
+//    while (y != "z")
+//    {
+//        cout << "Enter a word: " << endl;
+//        cin >> y;
+//        stem(y);
+//        myIndex->getPages(y, ax);
+//        cout << endl;
+//    }
 
 }
 

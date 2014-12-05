@@ -17,7 +17,7 @@ SOURCES += main.cpp \
     stopremover.cpp \
     tagstack.cpp \
     worddata.cpp \
-    queryprocessor.cpp
+    queryprocessor.cpp \
 
 HEADERS += \
     avlnode.h \
@@ -32,5 +32,5 @@ HEADERS += \
     stopremover.h \
     tagstack.h \
     worddata.h \
-    queryprocessor.h
+    queryprocessor.h \
 

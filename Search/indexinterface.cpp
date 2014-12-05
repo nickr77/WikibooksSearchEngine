@@ -31,3 +31,7 @@ void IndexInterface::clearIndex()
 {
 
 }
+void IndexInterface::partialClear()
+{
+
+}

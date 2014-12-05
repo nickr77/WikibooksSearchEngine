@@ -11,6 +11,7 @@
 #include "hashtableinterface.h"
 #include "avltreeinterface.h"
 #include "porter2_stemmer.h"
+#include "docindex.h"
 #include <math.h>
 using namespace std;
 using namespace Porter2Stemmer;
@@ -45,15 +46,19 @@ private:
     std::vector<int> frequency;
     int firstIndex;
     int lastIndex;
+    std::string title;
+    std::string author;
+    std::string date;
     void intersection(std::vector<int> &list1, std::vector<int> &list2, std::vector<int> &list3);
     void disjunction(std::vector<int> &list1, std::vector<int> &list2, std::vector<int> &list3);
     void remove(std::vector<int> & list, const int & item);
-    void frequencySort(vector<int> &pageList, vector<int> &frequency, int &firstIndex, int &lastIndex);
-    string search(IndexInterface *&myIndex);
-    void frequencyTracker(vector<int> &originalPageList, vector<int> finalPageList, vector<int> &frequency);
+    void frequencySort(vector<int> &pageList, vector<int> &freq, int &firstIndex, int &lastIndex);
+    string search(IndexInterface *&myIndex, std::vector<int> &finalList, std::vector<int> &freq);
+    void frequencyTracker(vector<int> &originalPageList, vector<int> &finalList, vector<int> &freq);
+    void first();
 public:
     QueryProcessor();
-    void displayFrequency(IndexInterface *&myIndex);
+    void displayFrequency(IndexInterface *&myIndex, DocIndex &dIndex);
 };
 
 #endif // QUERYPROCESSOR_H

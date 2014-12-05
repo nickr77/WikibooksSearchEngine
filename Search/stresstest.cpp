@@ -14,7 +14,6 @@ void StressTest::getCommands(string &fileName)
         while (getline(inputFile,line))
         {
             commands.push_back(line);
-            cout << line << endl;
         }
         inputFile.close();
     }
@@ -28,13 +27,23 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
     {
         if (commands[i] == "CLR")
         {
-            cout << "Clearing Index" << endl;
+            cout << "Clearing Index from RAM and Disk" << endl;
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
             dIndex.clearIndex();
             myIndex->clearIndex();
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count()<< " seconds." << endl;
+
         }
         else if (commands[i] == "HSH")
         {
             cout << "Creating Hash Table" << endl;
+
             myIndex = new HashTableInterface();
         }
 
@@ -46,7 +55,36 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
         else if (commands[i] == "RDI")
         {
             cout << "Reading Index" << endl;
+
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
             parser.readIndex(myIndex, dIndex);
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count()<< " seconds." << endl;
+
+
+
+        }
+        else if (commands[i] == "PCR")
+        {
+            cout << "Clearing Index from RAM" << endl;
+
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
+            dIndex.partialClear();
+            myIndex->partialClear();
+
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count()<< " seconds." << endl;
+
         }
         else if (commands[i].find("PAR") != std::string::npos)
         {
@@ -66,7 +104,18 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
                 }
             }
             cout << "Parsing " << fName << endl;
+
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
             parser.parse(myIndex, dIndex, fName);
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << " minutes." << endl;
+
+
         }
 
     }

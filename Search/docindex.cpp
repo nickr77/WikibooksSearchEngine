@@ -2,6 +2,31 @@
 
 DocIndex::DocIndex()
 {
+    ifstream inputFile;
+    string line = "";
+    inputFile.open("doclist.txt");
+    if (inputFile.is_open())
+    {
+        while (!inputFile.eof())
+        {
+            while (line != "END")
+            {
+                getline(inputFile, line);
+                if (line == "END")
+                    break;
+                cout << line << endl;
+                int temp = std::stoi(line);
+                pageStart.push_back(temp);
+                getline(inputFile, line);
+                cout << line << endl;
+                docName.push_back(line);
+
+            }
+        }
+    inputFile.close();
+    }
+
+
 }
 void DocIndex::insert(int &id, string &title, string &author, string &time)
 {
@@ -50,6 +75,16 @@ void DocIndex::writeIndex()
         outputFile << p.getAuthor() << std::endl;
         outputFile << p.getDate() << std::endl;
     }
+    outputFile.close();
+    outputFile.open("doclist.txt");
+    for(int i = 0; i < pageStart.size(); i++)
+    {
+        outputFile << pageStart[i] << endl;
+        outputFile << docName[i] << endl;
+    }
+    outputFile << "END";
+    outputFile.close();
+
 }
 
 void DocIndex::clearIndex()
@@ -58,7 +93,39 @@ void DocIndex::clearIndex()
     remove("docs.txt");
 }
 
+void DocIndex::partialClear()
+{
+    dIndex.clear();
+}
+
 int DocIndex::getSize()
 {
     return dIndex.size();
 }
+
+void DocIndex::addDocInfo(int &page, string &dName)
+{
+    pageStart.push_back(page);
+    docName.push_back(dName);
+}
+
+void DocIndex::whereToLook(int &page, int &pageST, string &dName)
+{
+    for(int i = 0; i < pageStart.size(); i++)
+    {
+        if (page > pageStart[i])
+        {
+            dName = docName[i];
+            pageST = pageStart[i];
+        }
+    }
+}
+
+void DocIndex::getPageInfo(int &id, string &title, string &author, string &date)
+{
+    title = dIndex[id].getTitle();
+    author = dIndex[id].getAuthor();
+    date = dIndex[id].getDate();
+}
+
+

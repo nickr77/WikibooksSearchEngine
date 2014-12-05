@@ -21,6 +21,7 @@ public:
     virtual int indexSize() {return mapIndex.size();}
     virtual void writeIndex();
     virtual void clearIndex();
+    virtual void partialClear();
 };
 
 #endif // HASHTABLEINTERFACE_H

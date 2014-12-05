@@ -31,6 +31,7 @@ public:
     virtual void writeIndex();
     virtual int indexSize();
     virtual void clearIndex();
+    virtual void partialClear();
 
 };
 

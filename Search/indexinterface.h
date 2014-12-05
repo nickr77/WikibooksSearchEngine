@@ -14,6 +14,7 @@ public:
     virtual void writeIndex();
     virtual int indexSize();
     virtual void clearIndex();
+    virtual void partialClear(); //for clearing from RAM only
 };
 
 #endif // INDEXINTERFACE_H

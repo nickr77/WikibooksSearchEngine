@@ -46,6 +46,7 @@ void driver( char *arguments[])
         if (choice == 1)
         {
             myIndex = new HashTableInterface();
+
         }
         else if (choice == 2)
         {
@@ -61,8 +62,10 @@ void driver( char *arguments[])
         }
     }
     string cArg = arguments[1];
+
     DocParse parser;
     DocIndex dIndex;
+    cout << "Hello" << endl;
     QueryProcessor qProcessor;
     if (cArg == "maintain")
     {
@@ -114,7 +117,7 @@ void driver( char *arguments[])
     {
         cout << "User Mode" << endl;
         parser.readIndex(myIndex, dIndex);
-        //qProcessor.displayFrequency(myIndex);
+        qProcessor.displayFrequency(myIndex, dIndex);
     }
     if (cArg == "stress")
     {

@@ -189,4 +189,9 @@ void AVLTreeInterface::clearIndex(AVLNode *t) //private function
 
 }
 
+void AVLTreeInterface::partialClear()
+{
+    clearIndex(root);
+}
+
 

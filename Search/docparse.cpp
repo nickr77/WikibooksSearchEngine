@@ -32,10 +32,11 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
     ifstream inputFile;
     inputFile.open(fileName.c_str());
     int pageCounter = dIndex.getSize();
+    dIndex.addDocInfo(pageCounter, fileName);
     //cout << pageCounter << endl;
-    cout << "Begin Parsing" << endl;
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    start = std::chrono::system_clock::now();
+//    cout << "Begin Parsing" << endl;
+//    std::chrono::time_point<std::chrono::system_clock> start, end;
+//    start = std::chrono::system_clock::now();
     if (inputFile.is_open())
     {
         while(!inputFile.eof())
@@ -188,11 +189,12 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
         }
     }
     inputFile.close();
-    end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-    cout << "End Parsing" << endl;
-    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
+
+//    end = std::chrono::system_clock::now();
+//    std::chrono::duration<double> elapsed_seconds = end-start;
+//    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+//    cout << "End Parsing" << endl;
+//    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
 
     dIndex.writeIndex();
     myIndex->writeIndex();
@@ -213,6 +215,7 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
     ifstream inputFile;
 //    std::chrono::time_point<std::chrono::system_clock> start, end;
 //    start = std::chrono::system_clock::now();
+    //cout << "Hello!" << endl;
     inputFile.open("index.txt");
     if (inputFile.is_open())
     {
@@ -281,5 +284,56 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
 
 }
 
+void DocParse::displayPageContents(int &desiredPage, DocIndex &dIndex)
+{
+    int pCount = 0;
+    string fName = "";
+    string line;
+    dIndex.whereToLook(desiredPage, pCount, fName);
+    ifstream inputFile;
+    inputFile.open(fName.c_str());
+    if (inputFile.is_open())
+    {
+        while(getline(inputFile, line))
+        {
+            counter = 0;
+            while (counter < line.size())
+            {
+                if (line[counter] == '<')
+                {
+                    tagStart = ++counter;
+                    while(line[counter] != '>')
+                    {
+                        counter++;
+                    }
+                    tagEnd = counter - 1;
+                    for (int i = tagStart; i <= tagEnd; i++)
+                    {
+                        curTag += line[i];
+                    }
+                }
+                if(curTag == "title")
+                {
+                    titleStart = counter + 1;
+                    while(line[counter] != '<')
+                    {
+                        counter++;
+                    }
+                    titleEnd = counter -1;
+                    for(int i = titleStart; i <= titleEnd; i++)
+                    {
+                        title += line[i];
+                    }
+                    pCount++;
+                }
+                else if (pCount == desiredPage)
+                {
+                    cout << line << endl;
+                }
 
+            }
+        }
 
+    }
+    inputFile.close();
+}

@@ -22,7 +22,7 @@ void HashTableInterface::insert(std::string &word, int &page)
 void HashTableInterface::getPages(std::string &query, std::vector<int> &pageList)
 {
     found = mapIndex.find(query);
-    cout << mapIndex.size() << endl;
+    //cout << mapIndex.size() << endl;
     if (found != mapIndex.end())
     {
         pageList = found->second;

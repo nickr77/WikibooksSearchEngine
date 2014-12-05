@@ -65,7 +65,7 @@ void driver( char *arguments[])
 
     DocParse parser;
     DocIndex dIndex;
-    cout << "Hello" << endl;
+
     QueryProcessor qProcessor;
     if (cArg == "maintain")
     {

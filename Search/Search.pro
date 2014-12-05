@@ -14,11 +14,17 @@ SOURCES += main.cpp \
     indexinterface.cpp \
     pageinfo.cpp \
     porter2_stemmer.cpp \
-    stopremover.cpp \
-    tagstack.cpp \
-    worddata.cpp \
     queryprocessor.cpp \
-    stresstest.cpp
+    stopremover.cpp \
+    stresstest.cpp \
+    tagstack.cpp \
+    worddata.cpp
+
+include(deployment.pri)
+qtcAddDeployment()
+
+OTHER_FILES += \
+    Search.pro.user
 
 HEADERS += \
     avlnode.h \
@@ -30,9 +36,9 @@ HEADERS += \
     indexinterface.h \
     pageinfo.h \
     porter2_stemmer.h \
-    stopremover.h \
-    tagstack.h \
-    worddata.h \
     queryprocessor.h \
-    stresstest.h
+    stopremover.h \
+    stresstest.h \
+    tagstack.h \
+    worddata.h
 

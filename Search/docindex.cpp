@@ -14,11 +14,11 @@ DocIndex::DocIndex()
                 getline(inputFile, line);
                 if (line == "END")
                     break;
-                cout << line << endl;
+                //cout << line << endl;
                 int temp = std::stoi(line);
                 pageStart.push_back(temp);
                 getline(inputFile, line);
-                cout << line << endl;
+                //cout << line << endl;
                 docName.push_back(line);
 
             }

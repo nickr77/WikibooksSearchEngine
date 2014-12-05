@@ -18,6 +18,7 @@ SOURCES += main.cpp \
     tagstack.cpp \
     worddata.cpp \
     queryprocessor.cpp \
+    stresstest.cpp
 
 HEADERS += \
     avlnode.h \
@@ -33,4 +34,5 @@ HEADERS += \
     tagstack.h \
     worddata.h \
     queryprocessor.h \
+    stresstest.h
 

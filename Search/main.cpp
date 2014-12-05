@@ -9,9 +9,11 @@
 #include "avltreeinterface.h"
 #include "docindex.h"
 #include "queryprocessor.h"
+#include "stresstest.h"
+
 using namespace std;
 using namespace Porter2Stemmer;
-void driver(int argc, char* arguments[]);
+void driver(char* arguments[]);
 
 
 
@@ -19,7 +21,7 @@ int main(int argc, char* arguments[])
 {
     if (argc == 2)
     {
-        driver(argc, arguments);
+        driver(arguments);
     }
     else
     {
@@ -28,7 +30,7 @@ int main(int argc, char* arguments[])
     }
 }
 
-void driver(int argc, char *arguments[])
+void driver( char *arguments[])
 {
     IndexInterface* myIndex;
     int choice = 5;
@@ -116,6 +118,15 @@ void driver(int argc, char *arguments[])
     }
     if (cArg == "stress")
     {
+        StressTest sTest;
+        string fName;
         cout << "Stress Test Mode" << endl;
+        cout << "Enter name and extension of command file: ";
+        cin >> fName;
+        sTest.getCommands(fName);
+        sTest.execute(parser, dIndex, myIndex, qProcessor);
+
+
+
     }
 }

@@ -33,10 +33,6 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
     inputFile.open(fileName.c_str());
     int pageCounter = dIndex.getSize();
     dIndex.addDocInfo(pageCounter, fileName);
-    //cout << pageCounter << endl;
-//    cout << "Begin Parsing" << endl;
-//    std::chrono::time_point<std::chrono::system_clock> start, end;
-//    start = std::chrono::system_clock::now();
     if (inputFile.is_open())
     {
         while(!inputFile.eof())
@@ -86,7 +82,6 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                         {
                             timestamp += line[i];
                         }
-                        //cout << timestamp << endl;
                         dIndex.insertTime(pageCounter, timestamp);
                     }
                     else if(curTag == "username")
@@ -101,7 +96,6 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                         {
                             username += line[i];
                         }
-                        //cout << username << endl;
                         dIndex.insertAuthor(pageCounter, username);
                     }
                     else if(curTag == "text xml:space=\"preserve\"")
@@ -115,17 +109,18 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                             {
                                 if(counter >= line.size())
                                 {
-                                    //cout << "New Line" << endl;
                                     textEnd = counter -1;
                                     for(int i = textStart; i <= textEnd; i++)
                                     {
-                                        if(line[i] < 'a' || line[i] > 'z')
+                                        if((line[i] >= 'a' && line[i] <= 'z') || (line[i] >= 'A' && line[i] <= 'Z'))
+                                        {
+                                            text += line[i];
+                                        }
+                                        else
                                         {
                                             text.clear();
                                             i = ++textEnd;
                                         }
-                                        else
-                                            text += line[i];
                                     }
 
                                     getline(inputFile, line);
@@ -138,13 +133,15 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
                             textEnd = counter -1;
                             for(int i = textStart; i <= textEnd; i++)
                             {
-                                if(line[i] < 'a' || line[i] > 'z')
+                                if((line[i] >= 'a' && line[i] <= 'z') || (line[i] >= 'A' && line[i] <= 'Z'))
+                                {
+                                    text += line[i];
+                                }
+                                else
                                 {
                                     text.clear();
                                     i = ++textEnd;
                                 }
-                                else
-                                    text += line[i];
                             }
                             if(text == "")
                             {
@@ -190,32 +187,13 @@ void DocParse::parse(IndexInterface* &myIndex, DocIndex &dIndex, string &fileNam
     }
     inputFile.close();
 
-//    end = std::chrono::system_clock::now();
-//    std::chrono::duration<double> elapsed_seconds = end-start;
-//    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-//    cout << "End Parsing" << endl;
-//    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
-
     dIndex.writeIndex();
     myIndex->writeIndex();
-//    string y = " ";
-//    while (y != "z")
-//    {
-//        cout << "Enter a word: " << endl;
-//        cin >> y;
-//        stem(y);
-//        myIndex->getPages(y);
-//        cout << endl;
-//    }
-
 }
 
 void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
 {
     ifstream inputFile;
-//    std::chrono::time_point<std::chrono::system_clock> start, end;
-//    start = std::chrono::system_clock::now();
-    //cout << "Hello!" << endl;
     inputFile.open("index.txt");
     if (inputFile.is_open())
     {
@@ -266,72 +244,57 @@ void DocParse::readIndex(IndexInterface *&myIndex, DocIndex &dIndex)
         }
     }
     inputFile.close();
-//    end = std::chrono::system_clock::now();
-//    std::chrono::duration<double> elapsed_seconds = end-start;
-//    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-//    cout << "End Parsing" << endl;
-//    cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << endl;
-    //string y = " ";
-    //vector<int> ax = {0};
-//    while (y != "z")
-//    {
-//        cout << "Enter a word: " << endl;
-//        cin >> y;
-//        stem(y);
-//        myIndex->getPages(y, ax);
-//        cout << endl;
-//    }
-
 }
 
 void DocParse::displayPageContents(int &desiredPage, DocIndex &dIndex)
 {
     int pCount = 0;
     string fName = "";
-    string line;
+    string tempLine;
     dIndex.whereToLook(desiredPage, pCount, fName);
     ifstream inputFile;
     inputFile.open(fName.c_str());
-    if (inputFile.is_open())
+    while(getline(inputFile, tempLine) && pCount <= desiredPage)
     {
-        while(getline(inputFile, line))
+        if(pCount == desiredPage)
         {
-            counter = 0;
-            while (counter < line.size())
+            cout << tempLine << endl;
+        }
+        counter = 0;
+        while (counter < tempLine.size())
+        {
+            if (tempLine[counter] == '<')
             {
-                if (line[counter] == '<')
+                tagStart = ++counter;
+                while(tempLine[counter] != '>')
                 {
-                    tagStart = ++counter;
-                    while(line[counter] != '>')
-                    {
-                        counter++;
-                    }
-                    tagEnd = counter - 1;
-                    for (int i = tagStart; i <= tagEnd; i++)
-                    {
-                        curTag += line[i];
-                    }
+                    counter++;
                 }
-                if(curTag == "title")
+                tagEnd = counter - 1;
+                for (int i = tagStart; i <= tagEnd; i++)
                 {
-                    titleStart = counter + 1;
-                    while(line[counter] != '<')
-                    {
-                        counter++;
-                    }
-                    titleEnd = counter -1;
-                    for(int i = titleStart; i <= titleEnd; i++)
-                    {
-                        title += line[i];
-                    }
-                    pCount++;
+                    curTag += tempLine[i];
                 }
-                else if (pCount == desiredPage)
-                {
-                    cout << line << endl;
-                }
-
             }
+            if(curTag == "title")
+            {
+                titleStart = counter + 1;
+                while(tempLine[counter] != '<')
+                {
+                    counter++;
+                }
+                titleEnd = counter -1;
+                for(int i = titleStart; i <= titleEnd; i++)
+                {
+                    title += tempLine[i];
+                }
+                pCount++;
+            }
+            else if (tempLine[counter] != '<' || tempLine[counter] != '>')
+            {
+                ++counter;
+            }
+            curTag.clear();
         }
 
     }

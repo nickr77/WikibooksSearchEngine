@@ -72,7 +72,7 @@ void driver( char *arguments[])
         int i = 5;
         string fileName;
         cout << "Welcome to maintainence mode!" << endl;
-
+        cout << "Please Hold. Loading Index... " << endl;
         parser.readIndex(myIndex, dIndex);
 
         cout << "What would you like to do?" << endl;
@@ -87,6 +87,7 @@ void driver( char *arguments[])
             {
                 cout << endl << "Enter the file name (with extension): ";
                 cin >> fileName;
+                cout << "Please Hold. Writing Index... " << endl;
                 parser.parse(myIndex, dIndex, fileName);
             }
             else if (i == 2)
@@ -104,26 +105,20 @@ void driver( char *arguments[])
                 cout << "Invalid Input, please input a valid number." << endl;
             }
         }
-
-
-
-
-
-
-
-        //parser.parse(myIndex, dIndex);
     }
     if (cArg == "user")
     {
-        cout << "User Mode" << endl;
+        int xy = 178708;
+        cout << "Welcome to User Mode!" << endl;
+        cout << "Please Hold. Loading Index... " << endl;
         parser.readIndex(myIndex, dIndex);
-        qProcessor.displayFrequency(myIndex, dIndex);
+        qProcessor.displayFrequency(myIndex, dIndex, parser);
     }
     if (cArg == "stress")
     {
         StressTest sTest;
         string fName;
-        cout << "Stress Test Mode" << endl;
+        cout << "Welcome to Stress Test Mode!" << endl;
         cout << "Enter name and extension of command file: ";
         cin >> fName;
         sTest.getCommands(fName);

@@ -12,6 +12,8 @@
 #include "avltreeinterface.h"
 #include "porter2_stemmer.h"
 #include "docindex.h"
+#include "stopremover.h"
+#include "docparse.h"
 #include <math.h>
 using namespace std;
 using namespace Porter2Stemmer;
@@ -20,6 +22,7 @@ class QueryProcessor
 private:
     //IndexInterface* myIndex = new HashTableInterface();
     TagStack myStack;
+    StopRemover stopRemove;
     std::string word;
     std::string singleSearchWord;
     std::string firstBoolean;
@@ -49,6 +52,15 @@ private:
     std::string title;
     std::string author;
     std::string date;
+
+    int newCounter;
+    int andTracker;
+    int orTracker;
+    int notTracker;
+    std::vector<std::string> andWordVector;
+    std::vector<std::string> orWordVector;
+    std::vector<std::string> notWordVector;
+
     void intersection(std::vector<int> &list1, std::vector<int> &list2, std::vector<int> &list3);
     void disjunction(std::vector<int> &list1, std::vector<int> &list2, std::vector<int> &list3);
     void remove(std::vector<int> & list, const int & item);
@@ -58,7 +70,7 @@ private:
     void first();
 public:
     QueryProcessor();
-    void displayFrequency(IndexInterface *&myIndex, DocIndex &dIndex);
+    void displayFrequency(IndexInterface *&myIndex, DocIndex &dIndex, DocParse &parser);
 };
 
 #endif // QUERYPROCESSOR_H

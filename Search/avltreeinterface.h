@@ -19,7 +19,7 @@ private:
     void rotateWithRightChild(AVLNode*& k1);
     void doubleWithLeftChild(AVLNode*& k3);
     void doubleWithRightChild(AVLNode*& k3);
-    void search(string &val, AVLNode *&t);
+    void search(string &val, AVLNode *&t, std::vector<int> &myList);
     void writeIndex(AVLNode *t, ofstream &outputFile);
     void clearIndex(AVLNode *t);
 

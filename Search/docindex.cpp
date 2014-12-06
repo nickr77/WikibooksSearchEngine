@@ -91,11 +91,15 @@ void DocIndex::clearIndex()
 {
     dIndex.clear();
     remove("docs.txt");
+    remove("doclist.txt");
 }
 
 void DocIndex::partialClear()
 {
     dIndex.clear();
+    pageStart.clear();
+    docName.clear();
+    remove("doclist.txt");
 }
 
 int DocIndex::getSize()

@@ -108,12 +108,12 @@ void AVLTreeInterface::doubleWithRightChild(AVLNode*& k3)
 
 void AVLTreeInterface::getPages(string &entry, std::vector<int> &myList)
 {
-    search(entry, root);
+    search(entry, root, myList);
 }
 
 int AVLTreeInterface::indexSize()
 {
-
+    cout << "Sorry, I don't know what to tell you" << endl;
 }
 
 void AVLTreeInterface::writeIndex()
@@ -149,7 +149,7 @@ void AVLTreeInterface::writeIndex(AVLNode *t, ofstream &outputFile)
     outputFile << endl;
 }
 
-void AVLTreeInterface::search(string &val, AVLNode* &t)
+void AVLTreeInterface::search(string &val, AVLNode* &t, std::vector<int> &myList)
 {
     if(t == nullptr)
     {
@@ -157,16 +157,16 @@ void AVLTreeInterface::search(string &val, AVLNode* &t)
     }
     else if (t->getEntry() == val)
     {
-        t->getPages();
+        myList = t->pages;
     }
 
     else if(val < t->element)
     {
-        search(val, t->left);
+        search(val, t->left, myList);
     }
     else if (t->element < val)
     {
-        search(val, t->right);
+        search(val, t->right, myList);
     }
 
 }

@@ -44,13 +44,30 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
         {
             cout << "Creating Hash Table" << endl;
 
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
             myIndex = new HashTableInterface();
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count()<< " seconds." << endl;
         }
 
         else if (commands[i] == "AVL")
         {
             cout << "Creating AVL Tree" << endl;
+
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
             myIndex = new AVLTreeInterface();
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count()<< " seconds." << endl;
         }
         else if (commands[i] == "RDI")
         {
@@ -68,6 +85,25 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
 
 
 
+        }
+        else if (commands[i].find("SEA") != std::string::npos)
+        {
+            string query = "";
+            string qName = commands[i];
+            for(int t = 4; t < qName.size(); t++)
+            {
+                query += qName[t];
+            }
+            cout << "Searching" << endl;
+            std::chrono::time_point<std::chrono::system_clock> start, end;
+            start = std::chrono::system_clock::now();
+
+            qProcess.stressSearch(myIndex, query);
+
+            end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end-start;
+            std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+            cout << "Elapsed Time: " << elapsed_seconds.count() / 60 << " minutes." << endl;
         }
         else if (commands[i] == "PCR")
         {
@@ -109,7 +145,7 @@ void StressTest::execute(DocParse &parser, DocIndex &dIndex, IndexInterface *&my
             start = std::chrono::system_clock::now();
 
             parser.parse(myIndex, dIndex, fName);
-
+            cout << "Parser Index Size: " << myIndex->indexSize() << endl;
             end = std::chrono::system_clock::now();
             std::chrono::duration<double> elapsed_seconds = end-start;
             std::time_t end_time = std::chrono::system_clock::to_time_t(end);

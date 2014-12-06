@@ -15,6 +15,370 @@ void QueryProcessor::first()
     getline(cin, blank);
 }
 
+void QueryProcessor::stressSearch(IndexInterface *&myIndex, string &stressQuery)
+{
+    queryString.clear();
+    word.clear();
+    andWord1.clear();
+    andWord2.clear();
+    orWord1.clear();
+    orWord2.clear();
+    notWord.clear();
+    singleSearchWord.clear();
+    myStack.clear();
+    andWord1List.clear();
+    andWord2List.clear();
+    andWordIntersection.clear();
+    orWord1List.clear();
+    orWord2List.clear();
+    orWordIntersection.clear();
+    notWordList.clear();
+    notWordIntersection.clear();
+    singleSearchWordList.clear();
+    firstBoolean.clear();
+    secondBoolean.clear();
+    finalPageList.clear();
+    frequency.clear();
+    andWordVector.clear();
+    orWordVector.clear();
+    notWordVector.clear();
+    andTracker = 0;
+    orTracker = 0;
+    notTracker = 0;
+    newCounter = 0;
+    istringstream iss(stressQuery);
+    string i;
+    //if(stressQuery != "")
+    //{
+        while(iss >> i)
+        {
+            word = i;
+            if (word == "AND")
+            {
+                firstBoolean = word;
+                myStack.push(word);
+            }
+            else if (word == "OR")
+            {
+                firstBoolean = word;
+                myStack.push(word);
+            }
+            else if (word == "NOT")
+            {
+                secondBoolean = word;
+                myStack.push(word);
+            }
+            else //Current word is not a boolean
+            {
+                if(firstBoolean == "AND" && secondBoolean != "NOT")
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        andWordVector.push_back(word);
+                        andTracker++;
+                    }
+                }
+                else if (firstBoolean == "OR" && secondBoolean != "NOT")
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        orWordVector.push_back(word);
+                        orTracker++;
+                    }
+                }
+                else if (firstBoolean == "AND" && secondBoolean == "NOT")
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        notWordVector.push_back(word);
+                        notTracker++;
+                    }
+                }
+                else if (firstBoolean == "OR" && secondBoolean == "NOT")
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        notWordVector.push_back(word);
+                        notTracker++;
+                    }
+                }
+                else if (firstBoolean != "OR" && firstBoolean != "AND" && secondBoolean == "NOT")
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        notWordVector.push_back(word);
+                        notTracker++;
+                    }
+                }
+                else //No Boolean
+                {
+                    if(stopRemove.checkWord(word) == false)
+                    {
+                        singleSearchWord = word;
+                    }
+                }
+            }
+        }
+        if(myStack.inList("AND") == true && myStack.inList("NOT") == true)
+        {
+            if(andWordVector.empty() == false && notWordVector.empty() == false)
+            {
+                for(int i = 0; i < andWordVector.size(); i++)
+                {
+                    stem(andWordVector[i]);
+                }
+                for(int i = 0; i < notWordVector.size(); i++)
+                {
+                    stem(notWordVector[i]);
+                }
+
+                myIndex->getPages(andWordVector[0], andWord1List);
+                myIndex->getPages(andWordVector[1], andWord2List);
+                intersection(andWord1List, andWord2List, andWordIntersection);
+                newCounter = 2;
+                while(newCounter < andTracker)
+                {
+                    if(andWordIntersection.empty())
+                    {
+                        break;
+                    }
+                    myIndex->getPages(andWordVector[newCounter], andWord1List);
+                    intersection(andWord1List, andWordIntersection, andWordIntersection);
+                    newCounter++;
+                }
+                newCounter = 0;
+                while(newCounter < notTracker)
+                {
+                    myIndex->getPages(notWordVector[newCounter], notWordList);
+                    for(int j = 0; j < notWordList.size(); j++)
+                    {
+                        remove(andWordIntersection, notWordList.at(j));
+                    }
+                    newCounter++;
+                }
+                frequencyTracker(andWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/andWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+            else if(andWordVector.empty() == false && notWordVector.empty() == true)
+            {
+                for(int i = 0; i < andWordVector.size(); i++)
+                {
+                    stem(andWordVector[i]);
+                }
+                myIndex->getPages(andWordVector[0], andWord1List);
+                myIndex->getPages(andWordVector[1], andWord2List);
+                intersection(andWord1List, andWord2List, andWordIntersection);
+                newCounter = 2;
+                while(newCounter < andTracker)
+                {
+                    if(andWordIntersection.empty())
+                    {
+                        break;
+                    }
+                    myIndex->getPages(andWordVector[newCounter], andWord1List);
+                    intersection(andWord1List, andWordIntersection, andWordIntersection);
+                    newCounter++;
+                }
+                frequencyTracker(andWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/andWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+        else if(myStack.inList("OR") == true && myStack.inList("NOT") == true)
+        {
+            if(orWordVector.empty() == false && notWordVector.empty() == false)
+            {
+                for(int i = 0; i < orWordVector.size(); i++)
+                {
+                    stem(orWordVector[i]);
+                }
+                for(int i = 0; i < notWordVector.size(); i++)
+                {
+                    stem(notWordVector[i]);
+                }
+
+                myIndex->getPages(orWordVector[0], orWord1List);
+                myIndex->getPages(orWordVector[1], orWord2List);
+                disjunction(orWord1List, orWord2List, orWordIntersection);
+                newCounter = 2;
+                while(newCounter < orTracker)
+                {
+                    myIndex->getPages(orWordVector[newCounter], orWord1List);
+                    disjunction(orWord1List, orWordIntersection, orWordIntersection);
+                    newCounter++;
+                }
+                newCounter = 0;
+                while(newCounter < notTracker)
+                {
+                    myIndex->getPages(notWordVector[newCounter], notWordList);
+                    for(int j = 0; j < notWordList.size(); j++)
+                    {
+                        remove(orWordIntersection, notWordList.at(j));
+                    }
+                    newCounter++;
+                }
+                frequencyTracker(orWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/orWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+            else if(orWordVector.empty() == false && notWordVector.empty() == true)
+            {
+                for(int i = 0; i < orWordVector.size(); i++)
+                {
+                    stem(orWordVector[i]);
+                }
+                myIndex->getPages(orWordVector[0], orWord1List);
+                myIndex->getPages(orWordVector[1], orWord2List);
+                disjunction(orWord1List, orWord2List, orWordIntersection);
+                newCounter = 2;
+                while(newCounter < orTracker)
+                {
+                    myIndex->getPages(orWordVector[newCounter], orWord1List);
+                    disjunction(orWord1List, orWordIntersection, orWordIntersection);
+                    newCounter++;
+                }
+                frequencyTracker(orWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/orWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+        else if(myStack.inList("AND") == true && myStack.inList("NOT") == false)
+        {
+            if(andWordVector.empty() == false)
+            {
+                for(int i = 0; i < andWordVector.size(); i++)
+                {
+                    stem(andWordVector[i]);
+                }
+                myIndex->getPages(andWordVector[0], andWord1List);
+                myIndex->getPages(andWordVector[1], andWord2List);
+                intersection(andWord1List, andWord2List, andWordIntersection);
+                newCounter = 2;
+                while(newCounter < andTracker)
+                {
+                    if(andWordIntersection.empty())
+                    {
+                        break;
+                    }
+                    myIndex->getPages(andWordVector[newCounter], andWord1List);
+                    intersection(andWord1List, andWordIntersection, andWordIntersection);
+                    newCounter++;
+                }
+                frequencyTracker(andWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/andWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+        else if(myStack.inList("OR") == true && myStack.inList("NOT") == false)
+        {
+            if(orWordVector.empty() == false)
+            {
+                for(int i = 0; i < orWordVector.size(); i++)
+                {
+                    stem(orWordVector[i]);
+                }
+                myIndex->getPages(orWordVector[0], orWord1List);
+                myIndex->getPages(orWordVector[1], orWord2List);
+                disjunction(orWord1List, orWord2List, orWordIntersection);
+                newCounter = 2;
+                while(newCounter < orTracker)
+                {
+                    myIndex->getPages(orWordVector[newCounter], orWord1List);
+                    disjunction(orWord1List, orWordIntersection, orWordIntersection);
+                    newCounter++;
+                }
+                frequencyTracker(orWordIntersection, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/orWordIntersection.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+        else if(myStack.inList("AND") == false && myStack.inList("OR") == false && myStack.inList("NOT") == true)
+        {
+            if(singleSearchWord.empty() == false)
+            {
+                stem(singleSearchWord);
+                if(notWordVector.empty() == false)
+                {
+                    for(int i = 0; i < notWordVector.size(); i++)
+                    {
+                        stem(notWordVector[i]);
+                    }
+                    myIndex->getPages(singleSearchWord, singleSearchWordList);
+                    newCounter = 0;
+                    while(newCounter < notTracker)
+                    {
+                        myIndex->getPages(notWordVector[newCounter], notWordList);
+                        for(int j = 0; j < notWordList.size(); j++)
+                        {
+                            remove(singleSearchWordList, notWordList.at(j));
+                        }
+                        newCounter++;
+                    }
+                }
+                else
+                {
+                    myIndex->getPages(singleSearchWord, singleSearchWordList);
+                }
+                frequencyTracker(singleSearchWordList, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/singleSearchWordList.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+        else //Single word search
+        {
+            if(singleSearchWord.empty() == false)
+            {
+                stem(singleSearchWord);
+                myIndex->getPages(singleSearchWord, singleSearchWordList);
+                frequencyTracker(singleSearchWordList, finalPageList, frequency);
+                firstIndex = 0;
+                lastIndex = frequency.size() - 1;
+                for(int i = 0; i < frequency.size(); i++)
+                {
+                    frequency[i] = frequency[i] * log(178800/singleSearchWordList.size());
+                }
+                frequencySort(finalPageList, frequency, firstIndex, lastIndex);
+            }
+        }
+    //}
+}
+
 void QueryProcessor::displayFrequency(IndexInterface* &myIndex, DocIndex &dIndex, DocParse &parser)
 {
     QueryProcessor qProcessor;

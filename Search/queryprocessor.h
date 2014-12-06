@@ -71,6 +71,7 @@ private:
 public:
     QueryProcessor();
     void displayFrequency(IndexInterface *&myIndex, DocIndex &dIndex, DocParse &parser);
+    void stressSearch(IndexInterface *&myIndex, std::string &stressQuery);
 };
 
 #endif // QUERYPROCESSOR_H

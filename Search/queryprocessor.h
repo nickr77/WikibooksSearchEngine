@@ -27,6 +27,14 @@ private:
     std::string singleSearchWord;
     std::string firstBoolean;
     std::string secondBoolean;
+    std::string lessBoolean;
+    std::string greaterBoolean;
+    std::string userBoolean;
+
+    std::string lessInput;
+    std::string greaterInput;
+    std::string userInput;
+
     std::string queryString;
     int wordStart;
     int wordEnd;
